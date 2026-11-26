@@ -1,0 +1,22 @@
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { SocketProvider } from './context/SocketContext';
+import App from './App';
+import './styles/global.css';
+import './styles/dashboard.css';
+import './styles/forms.css';
+import './styles/components.css';
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <BrowserRouter>
+      <AuthProvider>
+        <SocketProvider>
+          <App />
+        </SocketProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  </StrictMode>
+);

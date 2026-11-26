@@ -1,0 +1,411 @@
+{
+  "info": {
+    "name": "GarageGo API Collection",
+    "description": "Complete REST API collection covering all endpoints for GarageGo – Vehicle Service Booking & Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api" },
+    { "key": "accessToken", "value": "" },
+    { "key": "refreshToken", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "vehicleId", "value": "" },
+    { "key": "garageId", "value": "" },
+    { "key": "serviceId", "value": "" },
+    { "key": "bookingId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "API Health Check",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register User (Owner or Manager)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Owner\",\n  \"email\": \"test.owner@garagego.com\",\n  \"phone\": \"9876500001\",\n  \"password\": \"Password@123\",\n  \"role\": \"owner\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rahul.owner@garagego.com\",\n  \"password\": \"Password@123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh Access Token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/refresh",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Current User (Protected)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/auth/me"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/auth/logout"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vehicles",
+      "item": [
+        {
+          "name": "Create Vehicle (Owner)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": "{{baseUrl}}/vehicles",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"registrationNumber\": \"KA03XY7788\",\n  \"brand\": \"Kia\",\n  \"model\": \"Seltos\",\n  \"year\": 2023,\n  \"fuelType\": \"Petrol\",\n  \"vehicleType\": \"SUV\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Vehicles",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/vehicles"
+          }
+        },
+        {
+          "name": "Get Vehicle By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/vehicles/{{vehicleId}}"
+          }
+        },
+        {
+          "name": "Update Vehicle",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": "{{baseUrl}}/vehicles/{{vehicleId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"Seltos GTX\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Vehicle",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/vehicles/{{vehicleId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Garages",
+      "item": [
+        {
+          "name": "Get All Garages",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/garages"
+          }
+        },
+        {
+          "name": "Get Garage By ID (with Services)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/garages/{{garageId}}"
+          }
+        },
+        {
+          "name": "Create Garage (Manager/Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": "{{baseUrl}}/garages",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Prime Auto Works\",\n  \"address\": \"100 Ring Road, Bengaluru\",\n  \"phone\": \"080-40001122\",\n  \"description\": \"Multi-brand express garage\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Garage (Manager/Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": "{{baseUrl}}/garages/{{garageId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated workshop description\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "item": [
+        {
+          "name": "Get Services",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/services"
+          }
+        },
+        {
+          "name": "Get Service By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/services/{{serviceId}}"
+          }
+        },
+        {
+          "name": "Create Service (Manager/Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": "{{baseUrl}}/services",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"garage\": \"{{garageId}}\",\n  \"name\": \"Wheel Alignment\",\n  \"description\": \"4-wheel laser alignment\",\n  \"category\": \"Tyre Replacement\",\n  \"price\": 899,\n  \"estimatedDuration\": 45\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Service (Manager/Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": "{{baseUrl}}/services/{{serviceId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 949\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Service (Manager/Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/services/{{serviceId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "Create Booking (Owner)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": "{{baseUrl}}/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehicle\": \"{{vehicleId}}\",\n  \"garage\": \"{{garageId}}\",\n  \"services\": [\"{{serviceId}}\"],\n  \"appointmentDate\": \"2026-12-01\",\n  \"timeSlot\": \"10:00 - 11:00\",\n  \"notes\": \"Please check engine noise\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Bookings (Role-Scoped)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/bookings"
+          }
+        },
+        {
+          "name": "Get Booked Slots",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/bookings/slots?garage={{garageId}}&date=2026-12-01"
+          }
+        },
+        {
+          "name": "Get Booking By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/bookings/{{bookingId}}"
+          }
+        },
+        {
+          "name": "Update Booking Status / Job Card (Manager)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": "{{baseUrl}}/bookings/{{bookingId}}/status",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"IN SERVICE\",\n  \"mechanicName\": \"Ramesh Nair\",\n  \"notes\": \"Inspection started\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Cancel Booking (Owner)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": "{{baseUrl}}/bookings/{{bookingId}}/cancel",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"Rescheduling to next week\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reports (Aggregation)",
+      "item": [
+        {
+          "name": "Revenue Report (Manager/Admin)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/reports/revenue"
+          }
+        },
+        {
+          "name": "Service Report (Manager/Admin)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/reports/services"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/admin/users"
+          }
+        },
+        {
+          "name": "Update User (Approve / Deactivate)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": "{{baseUrl}}/admin/users/{{userId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isApproved\": true,\n  \"isActive\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Garages",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/admin/garages"
+          }
+        },
+        {
+          "name": "Approve / Deactivate Garage",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+            ],
+            "url": "{{baseUrl}}/admin/garages/{{garageId}}/approve",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Platform Bookings",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": "{{baseUrl}}/admin/bookings"
+          }
+        }
+      ]
+    }
+  ]
+}
