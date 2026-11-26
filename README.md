@@ -274,5 +274,4 @@ All seeded accounts use the password: **`Password@123`**
 - Online payment gateway integration (Razorpay/Stripe) for invoice settlement.
 - Automated PDF invoice generation for `DELIVERED` job cards.
 - SMS/Email reminders for upcoming scheduled appointments.
-#   G a r e g e C o  
- 
+# GaregeCo
